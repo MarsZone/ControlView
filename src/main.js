@@ -19,7 +19,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.use(createPinia())
 axios.defaults.baseURL="http://localhost:8080"
-axios.defaults.timeout=2000
+axios.defaults.timeout=10000
 axios.defaults.withCredentials = true
 app.use(VueAxios, axios)
 

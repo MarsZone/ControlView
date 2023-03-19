@@ -16,7 +16,8 @@
             <div class="card-header">
               <el-row>
                 <el-col :span="2">
-                  <el-icon class="active-check" color="gray">
+                  <el-icon class="active-check" 
+                          :class="(item as any).name == '未校验' ? 'status-offline' : 'status-online' ">
                     <CircleCheckFilled />
                   </el-icon>
                 </el-col>
@@ -58,6 +59,13 @@ import {
     methods: {
       toConnect() {
         console.log("connect")
+        //先判断下，是否已经有存在的了。
+        let key  = this.beesData.some(item=>item.key==this.inputValue)
+        if(key){
+          ElMessage({message: 'Key已添加',type: "warning"})
+          return
+        }
+        
         this.axios.post("/cvConnect", {
           'key': this.inputValue
         }).then(res => {
@@ -78,6 +86,19 @@ import {
           }
         })
       },
+      getUserName(key){
+        this.axios.post("/getUserName",{
+          'key':key
+        }).then(res=>{
+          console.log(res.data);
+          for(let item of this.beesData){
+            if(item.key==key){
+              item.name = res.data.message
+              //同时改变勾选为绿色
+            }
+          }
+        })
+      },
       checkConnect(key) {
         this.axios.post("/checkConnect",{
           'key':key
@@ -85,6 +106,12 @@ import {
         ).then(res => {
           console.log(res.data);
           var code = res.data.code
+          if(code=='200'){
+            var content = res.data.content
+            setTimeout(() => {
+              this.getUserName(key)
+            }, content);
+          }
           if (code == '400') {
             this.showError(res.data.message)
           }
@@ -113,6 +140,12 @@ import {
       margin: 5px;
       width: 24%;
     }
+  }
+  .status-offline{
+    color:gray;
+  }
+  .status-online{
+    color:green;
   }
 
   .box-card {
