@@ -16,7 +16,7 @@
             <div class="card-header">
               <el-row>
                 <el-col :span="2">
-                  <el-icon class="active-check" 
+                  <el-icon class="active-check status-icon" 
                           :class="(item as any).name == '未校验' ? 'status-offline' : 'status-online' ">
                     <CircleCheckFilled />
                   </el-icon>
@@ -93,8 +93,10 @@ import {
           console.log(res.data);
           for(let item of this.beesData){
             if(item.key==key){
-              item.name = res.data.message
               //同时改变勾选为绿色
+              item.name = res.data.message
+              //提示一下
+              this.showSuccess("角色:"+item.name +"已校验完成");
             }
           }
         })
@@ -140,6 +142,11 @@ import {
       margin: 5px;
       width: 24%;
     }
+  }
+  .status-icon{
+    position: absolute;
+    top: 4px;
+    left: -2px;
   }
   .status-offline{
     color:gray;
