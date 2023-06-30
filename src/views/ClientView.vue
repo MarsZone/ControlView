@@ -31,6 +31,7 @@
             </div>
           </template>
           <el-button round @click="checkConnect((item as any).key)">上线检测</el-button>
+          <el-button round @click="startMining((item as any).key)">挖矿</el-button>
         </el-card>
       </div>
     </div>
@@ -97,6 +98,7 @@ import {
               item.name = res.data.message
               //提示一下
               this.showSuccess("角色:"+item.name +"已校验完成");
+              this.axios.get("/closePanel?key="+key);
             }
           }
         })
@@ -109,7 +111,7 @@ import {
           console.log(res.data);
           var code = res.data.code
           if(code=='200'){
-            var content = res.data.content
+            var content = res.data.data.content
             setTimeout(() => {
               this.getUserName(key)
             }, content);
@@ -118,6 +120,9 @@ import {
             this.showError(res.data.message)
           }
         })
+      },
+      startMining(key){
+        
       },
       showSuccess(msg) {
         ElMessage({
