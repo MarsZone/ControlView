@@ -9,7 +9,10 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import './assets/main.css'
+import './assets/styles/dark/css-vars.css'
+
 
 const app = createApp(App)
 

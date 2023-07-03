@@ -122,7 +122,22 @@ import {
         })
       },
       startMining(key){
-        
+        this.axios.post("/startMining",{
+          'key':key
+        }
+        ).then(res => {
+          console.log(res.data);
+          var code = res.data.code
+          if(code=='200'){
+            ElMessage({
+              message: res.data,
+              type: "success"
+            })
+          }
+          if (code == '400') {
+            this.showError(res.data.message)
+          }
+        })
       },
       showSuccess(msg) {
         ElMessage({
